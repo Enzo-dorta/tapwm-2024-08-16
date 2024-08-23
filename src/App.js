@@ -1,22 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
 import ListaProduto from './componentes/lista_produto';
-
-const produto =[ {    // objeto json, já é nativo do javascript
-    nome:"Teste",
-    preco: 10.00,
-  },
-  {
-    nome:"Teste2",
-    preco: 20.00,
-  }]            
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 function App() {
+  const [produtos, setProdutos] = useState([]);
+  
+  useEffect(()=>{
+    carregaProdutos();
+  }, []);
+
+  function carregaProdutos(){
+    axios.get('https://app-api-tapwm.onrender.com/api/produtos')
+    .then(res=>{
+      setProdutos(res.data);
+      console.log(produtos);
+    });
+    
+  }
   return (
     <div>
 
       <h1>Lista Produtos</h1>
-      <ListaProduto produto={produto}/>
+      <ListaProduto produto={produtos}/>
     </div>
   );
 }
